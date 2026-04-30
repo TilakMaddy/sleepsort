@@ -25,7 +25,10 @@ services:
     image: sleepsort-app:latest
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db.taild766ac.ts.net:5432/sleepsort
+    depends_on:
+      - tailscale
+    network_mode: service:tailscale
 
 volumes:
   tailscale-data-app:
-    name: tailscale-data
+    name: tailscale-data-app

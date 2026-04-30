@@ -42,4 +42,4 @@ volumes:
   pgdata:
     name: pg-shared-data
   tailscale-data-pg:
-    name: tailscale-data
+    name: tailscale-data-pg
