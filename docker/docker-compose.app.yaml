@@ -1,0 +1,17 @@
+name: sleepsort
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: sleepsort-app:latest
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/sleepsort
+    networks:
+      - pg-shared
+
+networks:
+  pg-shared:
+    external: true
+    name: pg-shared
