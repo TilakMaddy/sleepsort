@@ -17,9 +17,7 @@ services:
       timeout: 3s
       retries: 15
     networks:
-      pg-shared:
-        aliases:
-          - db
+      - pg-shared
     restart: unless-stopped
 
 networks:
