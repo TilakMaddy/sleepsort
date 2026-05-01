@@ -29,8 +29,12 @@ rows:
 psql:
     docker exec -it pg-shared psql -U postgres -d sleepsort
 
-# Publish image to Docker Hub. Example: just publish 0.1.0
+# Publish multi-arch image (amd64 + arm64) to Docker Hub. Example: just publish 0.1.0
 publish VERSION="latest":
-    docker build -f docker/Dockerfile -t {{ image }}:{{ VERSION }} -t {{ image }}:latest .
-    docker push {{ image }}:{{ VERSION }}
-    docker push {{ image }}:latest
+    docker buildx create --name sleepsort-builder --use --bootstrap 2>/dev/null || docker buildx use sleepsort-builder
+    docker buildx build \
+        --platform linux/amd64,linux/arm64 \
+        -f docker/Dockerfile \
+        -t {{ image }}:{{ VERSION }} \
+        -t {{ image }}:latest \
+        --push .
