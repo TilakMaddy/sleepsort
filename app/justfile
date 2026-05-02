@@ -1,0 +1,23 @@
+compose := "docker compose --env-file ../.env -f docker-compose.app.yaml"
+image := "tfeoatmilk/sleepsort"
+
+default:
+    @just --list app
+
+# Build the app image
+build:
+    {{ compose }} build
+
+# Run sleep sort. Example: just app sort 5,2,3,6
+sort NUMBERS:
+    {{ compose }} run --rm app -- {{ NUMBERS }}
+
+# Publish multi-arch image (amd64 + arm64) to Docker Hub. Example: just app publish 0.1.0
+publish VERSION="latest":
+    docker buildx create --name sleepsort-builder --use --bootstrap 2>/dev/null || docker buildx use sleepsort-builder
+    docker buildx build \
+        --platform linux/amd64,linux/arm64 \
+        -f Dockerfile \
+        -t {{ image }}:{{ VERSION }} \
+        -t {{ image }}:latest \
+        --push .

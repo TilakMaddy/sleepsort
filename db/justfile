@@ -1,0 +1,20 @@
+compose := "docker compose --env-file ../.env -f docker-compose.db.yml"
+
+default:
+    @just --list db
+
+# Start shared Postgres
+up:
+    {{ compose }} up -d --wait
+
+# Stop shared Postgres (keeps data)
+down:
+    {{ compose }} down
+
+# Show all rows
+rows:
+    docker exec pg-shared psql -U postgres -d sleepsort -c "TABLE sorts;"
+
+# Open a psql shell
+psql:
+    docker exec -it pg-shared psql -U postgres -d sleepsort
