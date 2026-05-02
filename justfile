@@ -34,7 +34,7 @@ publish VERSION="latest":
     docker buildx create --name sleepsort-builder --use --bootstrap 2>/dev/null || docker buildx use sleepsort-builder
     docker buildx build \
         --platform linux/amd64,linux/arm64 \
-        -f docker/Dockerfile \
+        -f app/Dockerfile \
         -t {{ image }}:{{ VERSION }} \
         -t {{ image }}:latest \
-        --push .
+        --push app
