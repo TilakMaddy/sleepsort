@@ -27,7 +27,9 @@ services:
       POSTGRES_DB: sleepsort
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d:ro
+    configs:
+      - source: init_sql
+        target: /docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d sleepsort"]
       interval: 1s
@@ -43,3 +45,13 @@ volumes:
     name: pg-shared-data
   tailscale-data-pg:
     name: tailscale-data-pg
+
+configs:
+  init_sql:
+    content: |
+      CREATE TABLE IF NOT EXISTS sorts (
+          id              SERIAL PRIMARY KEY,
+          input_numbers   INT[] NOT NULL,
+          sorted_numbers  INT[] NOT NULL,
+          created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
