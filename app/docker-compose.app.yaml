@@ -24,9 +24,7 @@ services:
     restart: unless-stopped
 
   app:
-    build:
-      context: ../app
-      dockerfile: Dockerfile
+    build: .
     image: sleepsort-app:latest
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db.taild766ac.ts.net:5432/sleepsort

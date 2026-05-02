@@ -1,5 +1,5 @@
-db := "docker compose -f docker/docker-compose.db.yml"
-app := "docker compose -f docker/docker-compose.app.yaml"
+db := "docker compose --env-file .env -f db/docker-compose.db.yml"
+app := "docker compose --env-file .env -f app/docker-compose.app.yaml"
 image := "tfeoatmilk/sleepsort"
 
 default:
